@@ -376,7 +376,16 @@ const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 
   toggleZargeControl(value);
   toggleDoorTypeControl(value);
 });
+        
+function toggleDoorTypeControl(elementType) {
+  // Türtyp immer zuerst auf 'single' setzen
+  options.doorType = 'single';
 
+  // Falls das GUI-Element existiert, setze den Wert zurück auf 'single'
+  if (doorTypeControl) {
+    doorTypeControl.setValue('single');
+  }
+        
 // Add Zarge Type (initially hidden)
 let zargeControl;
 function addZargeControl() {
