@@ -311,13 +311,11 @@ const options = {
 // Add controls
 const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange((value) => {
   options.Elementbreite = value;
-  updateWallWithDoorway(options);
   updateElement();
 });
 
 const ElementhöheControl = gui.add(options, 'Elementhöhe', 190, 300).onChange((value) => {
   options.Elementhöhe = value;
-  updateWallWithDoorway(options);
   updateElement();
 });
 
