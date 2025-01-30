@@ -444,6 +444,10 @@ function updateElement() {
       options.Elementbreite = 100;
       ElementbreiteControl.setValue(100);
     }
+    if (options.single && options.Elementbreite > 150) {
+      options.Elementbreite = 150;
+      ElementbreiteControl.setValue(150);
+    }
 
     if (options.elementType === 'Drehtür') {
       addSwingDoor(options);
