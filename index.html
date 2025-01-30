@@ -457,6 +457,7 @@ function updateElement() {
   } else if (options.elementType === 'Trennwand') {
       options.doorType = 'single';
       options.Elementbreite = 50;
+      ElementbreiteControl.setValue(50);
       addTrennwand(options);
   }
 }
