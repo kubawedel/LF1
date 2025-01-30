@@ -431,16 +431,6 @@ function toggleDoorTypeControl(elementType) {
     removeDoorTypeControl();
   }
 }
-    // Falls zuvor 'double' ausgewählt war, stelle sicher, dass min/max angepasst sind
-    if (options.doorType === 'double') {
-      ElementbreiteControl.min(100).max(300);
-    } else {
-      ElementbreiteControl.min(50).max(150);
-    }
-  } else if (elementType !== 'Drehtür' && elementType !== 'Schiebetür') {
-    removeDoorTypeControl();
-  }
-}
 
 // Update the current element based on selected options
 function updateElement() {
