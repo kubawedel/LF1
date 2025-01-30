@@ -419,23 +419,18 @@ function removeDoorTypeControl() {
 // Toggle Door Type control visibility based on elementType
 function toggleDoorTypeControl(elementType) {
   if (elementType === 'Trennwand') {
-    // Türtyp auf 'single' setzen
+    // Türtyp auf 'single' setzen, weil Trennwand keine Doppelauswahl hat
     options.doorType = 'single';
-    
-    // Elementbreite auf 50-150 cm begrenzen
-    if (options.Elementbreite > 150) {
-      options.Elementbreite = 150;
-    }
-    ElementbreiteControl.min(50).max(150).setValue(options.Elementbreite);
-
-    // Entferne Türtyp-Option
     if (doorTypeControl) {
       gui.remove(doorTypeControl);
       doorTypeControl = null;
     }
   } else if ((elementType === 'Drehtür' || elementType === 'Schiebetür') && !doorTypeControl) {
     addDoorTypeControl();
-
+  } else if (elementType !== 'Drehtür' && elementType !== 'Schiebetür') {
+    removeDoorTypeControl();
+  }
+}
     // Falls zuvor 'double' ausgewählt war, stelle sicher, dass min/max angepasst sind
     if (options.doorType === 'double') {
       ElementbreiteControl.min(100).max(300);
