@@ -301,7 +301,7 @@ const options = {
   elementColor: '#187b91',
   Elementbreite: 100,
   Elementhöhe: 210,
-  elementType: 'Trennwand',
+  elementType: 'none',
   zargeType: 'standard',
   sprossenRows: 2,
   sprossenCols: 2,
@@ -310,7 +310,36 @@ const options = {
 
 // Add controls
 const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange((value) => {
-  options.Elementbreite = value;
+  if (options.isDoubleDoor) {
+    // Begrenzung für doppelte Elemente (min: 100 cm, max: 300 cm)
+    if (value < 100) {
+      options.Elementbreite = 100;
+      ElementbreiteControl.setValue(100);
+    } else if (value > 300) {
+      options.Elementbreite = 300;
+      ElementbreiteControl.setValue(300);
+    } else {
+      options.Elementbreite = value;
+    }
+  } else {
+    // Begrenzung für einzelne Elemente (max: 150 cm)
+    if (value > 150) {
+      options.Elementbreite = 150;
+      ElementbreiteControl.setValue(150);
+    } else {
+      options.Elementbreite = value;
+    }
+  }
+  updateElement();
+});
+
+const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((value) => {
+  if (options.elementType === 'Trennwand' && value < 50) {
+    options.Elementhöhe = 50;
+    ElementhöheControl.setValue(50);
+  } else {
+    options.Elementhöhe = value;
+  }
   updateElement();
 });
 
@@ -391,12 +420,20 @@ function toggleDoorTypeControl(elementType) {
 function updateElement() {
   if (options.elementType === 'none') {
     removeCurrentElement();
-  } else if (options.elementType === 'Drehtür') {
+  } else if (options.elementType === 'Drehtür' || options.elementType === 'Schiebetür') {
     options.isDoubleDoor = options.doorType === 'double';
-    addSwingDoor(options);
-  } else if (options.elementType === 'Schiebetür') {
-    options.isDoubleDoor = options.doorType === 'double';
-    addSlidingDoor(options);
+
+    // Falls Doppel gewählt wird und die Breite unter 100 cm liegt, setzen wir sie auf 100 cm
+    if (options.isDoubleDoor && options.Elementbreite < 100) {
+      options.Elementbreite = 100;
+      ElementbreiteControl.setValue(100);
+    }
+
+    if (options.elementType === 'Drehtür') {
+      addSwingDoor(options);
+    } else if (options.elementType === 'Schiebetür') {
+      addSlidingDoor(options);
+    }
   } else if (options.elementType === 'Trennwand') {
     addTrennwand(options);
   }
