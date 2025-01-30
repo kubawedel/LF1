@@ -334,17 +334,26 @@ const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange
 });
 
 const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((value) => {
-  if (options.elementType === 'Trennwand' && value < 50) {
-    options.Elementhöhe = 50;
-    ElementhöheControl.setValue(50);
+  if (options.elementType === 'Trennwand') {
+    // Mindesthöhe für Trennwand: 50 cm
+    if (value < 50) {
+      options.Elementhöhe = 50;
+      ElementhöheControl.setValue(50);
+    } else {
+      options.Elementhöhe = value;
+    }
+  } else if (options.elementType === 'Drehtür' || options.elementType === 'Schiebetür') {
+    // Mindesthöhe für Türen: 190 cm
+    if (value < 190) {
+      options.Elementhöhe = 190;
+      ElementhöheControl.setValue(190);
+    } else {
+      options.Elementhöhe = value;
+    }
   } else {
     options.Elementhöhe = value;
   }
-  updateElement();
-});
 
-const ElementhöheControl = gui.add(options, 'Elementhöhe', 190, 300).onChange((value) => {
-  options.Elementhöhe = value;
   updateElement();
 });
 
