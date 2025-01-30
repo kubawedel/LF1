@@ -418,7 +418,14 @@ function removeDoorTypeControl() {
 
 // Toggle Door Type control visibility based on elementType
 function toggleDoorTypeControl(elementType) {
-  if ((elementType === 'Drehtür' || elementType === 'Schiebetür') && !doorTypeControl) {
+  if (elementType === 'Trennwand') {
+    // Türtyp auf 'single' setzen, weil Trennwand keine Doppelauswahl hat
+    options.doorType = 'single';
+    if (doorTypeControl) {
+      gui.remove(doorTypeControl);
+      doorTypeControl = null;
+    }
+  } else if ((elementType === 'Drehtür' || elementType === 'Schiebetür') && !doorTypeControl) {
     addDoorTypeControl();
   } else if (elementType !== 'Drehtür' && elementType !== 'Schiebetür') {
     removeDoorTypeControl();
