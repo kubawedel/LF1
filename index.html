@@ -451,6 +451,8 @@ const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange
     }
   }
   updateElement();
+  updateSeitenteillinks();
+  updateSeitenteilrechts();
 });
 
 const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((value) => {
@@ -475,19 +477,27 @@ const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((
   }
 
   updateElement();
+  updateSeitenteillinks();
+  updateSeitenteilrechts();
 });
 
 const elementColorControl = gui.addColor(options, 'elementColor').onChange((value) => {
   options.Color = value;
   updateElement();
+  updateSeitenteillinks();
+  updateSeitenteilrechts();
 });
 
 const sprossenRowsControl = gui.add(options, 'sprossenRows', 0, 5, 1).onChange(() => {
   updateElement();
+  updateSeitenteillinks();
+  updateSeitenteilrechts();
 });
 
 const sprossenColsControl = gui.add(options, 'sprossenCols', 0, 5, 1).onChange(() => {
   updateElement();
+  updateSeitenteillinks();
+  updateSeitenteilrechts();
 });
 
 const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 'Schiebetür', 'Trennwand']).onChange((value) => {
