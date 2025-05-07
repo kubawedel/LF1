@@ -222,7 +222,7 @@ function addSlidingDoor(options) {
   removeCurrentElement();
 
   const doorWidth = (options.Elementbreite + 2) / (options.doorType === 'double' ? 2 : 1); // Halbe Breite bei Doppelschiebetür
-  const doorHeight = options.Elementhöhe + 1; // 1 cm größer in der Höhe
+  const doorHeight = options.Elementhöhe - 1; // 1 cm größer in der Höhe
   const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
@@ -241,31 +241,31 @@ function addSlidingDoor(options) {
     // Linke Türhälfte
     const leftDoor = new THREE.Group();
     createDoorWithGlassAndFrame(leftDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    leftDoor.position.set(-doorWidth / 2, doorHeight / 2, 0); // Verschiebung nach links
+    leftDoor.position.set(-doorWidth / 2, doorHeight / 2 + 1, 2); // Verschiebung nach links
     slidingDoorGroup.add(leftDoor);
 
     // Rechte Türhälfte
     const rightDoor = new THREE.Group();
     createDoorWithGlassAndFrame(rightDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    rightDoor.position.set(doorWidth / 2, doorHeight / 2, 0); // Verschiebung nach rechts
+    rightDoor.position.set(doorWidth / 2, doorHeight / 2 + 1, 2); // Verschiebung nach rechts
     slidingDoorGroup.add(rightDoor);
   } else {
     // Einflügelige Schiebetür mittig
     const singleDoor = new THREE.Group();
     createDoorWithGlassAndFrame(singleDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    singleDoor.position.set(0, doorHeight / 2, 0); // Mittig vor der Wand
+    singleDoor.position.set(0, doorHeight / 2, 2); // Mittig vor der Wand
     slidingDoorGroup.add(singleDoor);
   }
 
   // Obere Blende (Bündig mit Wand, doppelte Breite)
-  const coverWidth = (options.Elementbreite + 2) * 2; // Doppelte Breite der Tür
+  const coverWidth = (options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite); // Doppelte Breite der Tür
   const coverHeight = 8; // Höhe der Blende 8 cm
-  const coverDepth = 5; // Tiefe der Blende 5 cm
+  const coverDepth = 9; // Tiefe der Blende 9 cm
 
   const cover = createLoftFrenchElement(coverWidth, coverHeight, coverDepth, {
     x: 0,
     y: options.Elementhöhe + 5, // Position bündig über der Tür
-    z: 2.5, // Bündig mit der Wand
+    z: 0, // Bündig mit der Wand
   }, doorMaterial);
 
   slidingDoorGroup.add(cover); // Blende zur Türgruppe hinzufügen
