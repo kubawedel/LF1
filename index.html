@@ -447,16 +447,17 @@ const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja'
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
   updateSeitenteillinks();
 });
+// Direkt nach dem Erstellen verstecken:
+SeitenteillinksbreiteControl.domElement.parentElement.style.display = 'none';
 
 // Breiten-Slider zeigen/verstecken
 function toggleSeitenteillinksbreite(value) {
-  if (value === 'nein') {
-    SeitenteillinksbreiteControl.hide();
+  if (value === 'ja') {
+    SeitenteillinksbreiteControl.domElement.parentElement.style.display = '';
   } else {
-    SeitenteillinksbreiteControl.show();
+    SeitenteillinksbreiteControl.domElement.parentElement.style.display = 'none';
   }
 }
-              
 // Add Zarge Type (initially hidden)
 let zargeControl;
 function addZargeControl() {
