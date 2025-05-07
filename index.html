@@ -406,21 +406,24 @@ const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 
   toggleDoorTypeControl(value);
 });
 
-const Seitenteillinks = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onChange((value) => {
-  option.Seitenteillinks = value;
+// GUI-Option: Seitenteillinks (ja/nein)
+const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onChange((value) => {
+  options.Seitenteillinks = value;
   updateSeitenteillinks();
   toggleSeitenteillinksbreite(value);
 });
 
+// GUI-Option: Breite des linken Seitenteils
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
   updateSeitenteillinks();
 });
 
- function toggleSeitenteillinksbreite(Seitenteillinks) {
-  if (Seitenteillinks === 'ja' && !Seitenteilinksbreite) {
-    addSeitenteilinksbreite();
-  } else if (Seitenteillinks !== 'nein') {
-    removeSeitenteillinksbreite();
+// Breiten-Slider zeigen/verstecken
+function toggleSeitenteillinksbreite(value) {
+  if (value === 'ja') {
+    SeitenteillinksbreiteControl.show();
+  } else {
+    SeitenteillinksbreiteControl.hide();
   }
 }
               
