@@ -315,7 +315,7 @@ function addSeitenteillinks(options) {
   const Seitenteillinks = new THREE.Group();
   Seitenteillinks.name = 'Seitenteillinks';
 
-  createDoorWithGlassAndFrame(Seitenteillinks, width, height, options.sprossenRows, sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(Seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
 
   Seitenteillinks.position.set(xOffset, height / 2, 0);
 
@@ -343,7 +343,7 @@ function updateSeitenteillinks() {
     });
 
     const seitenteillinks = new THREE.Group();
-    createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, sprossenCols, glassMaterial, sprosseMaterial);
+    createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
     
     // Position links vom Hauptelement
     seitenteillinks.position.set(-options.Elementbreite / 2 - width / 2, height / 2, 0);
@@ -373,7 +373,7 @@ function addSeitenteilrechts(options) {
   const Seitenteilrechts = new THREE.Group();
   Seitenteilrechts.name = 'Seitenteilrechts';
 
-  createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
 
   Seitenteilrechts.position.set(xOffset * -1, height / 2, 0);
 
@@ -401,7 +401,7 @@ function updateSeitenteilrechts() {
     });
 
     const Seitenteilrechts = new THREE.Group();
-    createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, sprossenCols, glassMaterial, sprosseMaterial);
+    createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
     
     // Position rechts vom Hauptelement
     Seitenteilrechts.position.set(options.Elementbreite / 2 + width / 2, height / 2, 0);
