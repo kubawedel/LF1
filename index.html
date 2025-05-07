@@ -405,8 +405,7 @@ const Seitenteillinks = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onCh
 });
 
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
-      options.Elementhöhe = value;
-    }
+  options.Elementhöhe = value;
   updateSeitenteillinks();
 });
 
