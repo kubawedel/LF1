@@ -298,7 +298,7 @@ function addTrennwand(options) {
 // Seitenteillinks
 function addSeitenteillinks(options) {
   
-  const SeitenteillinksWidth = options.Seitenteillinks;
+  const SeitenteillinksWidth = options.Seitenteillinksbreite;
   const SeitenteillinksHeight = options.Elementhöhe;
   const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
@@ -405,10 +405,26 @@ const Seitenteillinks = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onCh
 });
 
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
-  options.Elementhöhe = value;
   updateSeitenteillinks();
 });
 
+function updateSeitenteillinks() {
+  // Vorheriges Seitenteil ggf. entfernen
+  const existing = scene.getObjectByName("Seitenteillinks");
+  if (existing) scene.remove(existing);
+
+  if (options.Seitenteillinks === 'ja') {
+    addSeitenteillinks(options);
+  }
+}
+
+        function toggleSeitenteillinksbreite(value) {
+  if (value === 'ja') {
+    SeitenteillinksbreiteControl.domElement.parentElement.parentElement.style.display = '';
+  } else {
+    SeitenteillinksbreiteControl.domElement.parentElement.parentElement.style.display = 'none';
+  }
+}
 function toggleSeitenteillinksbreite(Seitenteillinks) {
   if (Seitenteillinks === 'ja' && !Seitenteilinksbreite) {
     addSeitenteilinksbreite();
