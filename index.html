@@ -352,6 +352,65 @@ function updateSeitenteillinks() {
     seitenteillinksMesh = seitenteillinks;
   }
 }
+
+// Seitenteilrechts
+function addSeitenteilrechts(options) {
+  const width = options.Seitenteilrechtsbreite;
+  const height = options.Elementhöhe;
+  const xOffset = options.Elementbreite / 2 + width / 2;
+
+  // Entferne vorheriges Seitenteil, falls vorhanden
+  const old = scene.getObjectByName('Seitenteilrechts');
+  if (old) scene.remove(old);
+
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
+  const sprosseMaterial = new THREE.MeshStandardMaterial({ 
+    color: options.elementColor,
+    metalness: 0.7,
+    roughness: 0.05,
+  });
+
+  const Seitenteilrechts = new THREE.Group();
+  Seitenteilrechts.name = 'Seitenteilrechts';
+
+  createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, glassMaterial, sprosseMaterial);
+
+  Seitenteilrechts.position.set(xOffset, height / 2, 0);
+
+  scene.add(Seitenteilrechts);
+}
+
+        let SeitenteilrechtsMesh = null;
+
+function updateSeitenteilrechts() {
+  // Vorherige entfernen, wenn vorhanden
+  if (SeitenteilrechtsMesh) {
+    scene.remove(SeitenteilrechtsMesh);
+  }
+
+  if (options.Seitenteilrechts === 'ja') {
+    // Neues Seitenteil erzeugen
+    const width = options.Seitenteilrechtsbreite;
+    const height = options.Elementhöhe;
+
+    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
+    const sprosseMaterial = new THREE.MeshStandardMaterial({ 
+      color: options.elementColor,
+      metalness: 0.7,
+      roughness: 0.05,
+    });
+
+    const Seitenteilrechts = new THREE.Group();
+    createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, glassMaterial, sprosseMaterial);
+    
+    // Position links vom Hauptelement
+    Seitenteilrechts.position.set(-options.Elementbreite / 2 - width / 2, height / 2, 0);
+
+    scene.add(Seitenteilrechts);
+    SeitenteilrechtsMesh = Seitenteilrechts;
+  }
+}
+        
 // GUI-Konfiguration
 const gui = new GUI();
 const options = {
@@ -365,6 +424,8 @@ const options = {
   doorType: 'single', // Neue Option: 'single' oder 'double'
   Seitenteillinks: 'nein',
   Seitenteillinksbreite: 20,
+  Seitenteilrechts: 'nein',
+  Seitenteilrechtsbreite: 20,
 };
 
 // Add controls
@@ -458,6 +519,30 @@ function toggleSeitenteillinksbreite(value) {
     SeitenteillinksbreiteControl.domElement.parentElement.style.display = 'none';
   }
 }
+
+// GUI-Option: Seitenteilrechts (ja/nein)
+const SeitenteilrechtsControl = gui.add(options, 'Seitenteilrechts', ['nein', 'ja']).onChange((value) => {
+  options.Seitenteilrechts = value;
+  updateSeitenteilrechts();
+  toggleSeitenteilrechtsbreite(value);
+});
+
+// GUI-Option: Breite des linken Seitenteils
+const SeitenteilrechtsbreiteControl = gui.add(options, 'Seitenteilrechtsbreite', 20, 110).onChange((value) => {
+  updateSeitenteilrechts();
+});
+// Direkt nach dem Erstellen verstecken:
+SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = 'none';
+
+// Breiten-Slider zeigen/verstecken
+function toggleSeitenteilrechtsbreite(value) {
+  if (value === 'ja') {
+    SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = '';
+  } else {
+    SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = 'none';
+  }
+}
+        
 // Add Zarge Type (initially hidden)
 let zargeControl;
 function addZargeControl() {
