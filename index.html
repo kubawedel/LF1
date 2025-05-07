@@ -366,8 +366,6 @@ const options = {
   Seitenteillinks: 'nein',
   Seitenteillinksbreite: 20,
 };
-        
-SeitenteillinksbreiteControl.hide();
 
 // Add controls
 const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange((value) => {
@@ -449,7 +447,7 @@ const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja'
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
   updateSeitenteillinks();
 });
-
+SeitenteillinksbreiteControl.hide();
 // Breiten-Slider zeigen/verstecken
 function toggleSeitenteillinksbreite(value) {
   if (value === 'ja') {
