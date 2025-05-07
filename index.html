@@ -447,13 +447,13 @@ const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja'
 const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
   updateSeitenteillinks();
 });
-SeitenteillinksbreiteControl.hide();
+
 // Breiten-Slider zeigen/verstecken
 function toggleSeitenteillinksbreite(value) {
-  if (value === 'ja') {
-    SeitenteillinksbreiteControl.show();
-  } else {
+  if (value === 'nein') {
     SeitenteillinksbreiteControl.hide();
+  } else {
+    SeitenteillinksbreiteControl.show();
   }
 }
               
