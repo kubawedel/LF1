@@ -425,13 +425,6 @@ function updateSeitenteillinks() {
     SeitenteillinksbreiteControl.domElement.parentElement.parentElement.style.display = 'none';
   }
 }
-function toggleSeitenteillinksbreite(Seitenteillinks) {
-  if (Seitenteillinks === 'ja' && !Seitenteilinksbreite) {
-    addSeitenteilinksbreite();
-  } else if (Seitenteillinks !== 'nein') {
-    removeSeitenteillinksbreite();
-  }
-}
               
 // Add Zarge Type (initially hidden)
 let zargeControl;
