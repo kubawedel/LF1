@@ -357,7 +357,7 @@ function updateSeitenteillinks() {
 function addSeitenteilrechts(options) {
   const width = options.Seitenteilrechtsbreite;
   const height = options.Elementhöhe;
-  const xOffset = - options.Elementbreite / 2 - width / 2;
+  const xOffset = options.Elementbreite / 2 + width / 2;
 
   // Entferne vorheriges Seitenteil, falls vorhanden
   const old = scene.getObjectByName('Seitenteilrechts');
@@ -375,7 +375,7 @@ function addSeitenteilrechts(options) {
 
   createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, glassMaterial, sprosseMaterial);
 
-  Seitenteilrechts.position.set(xOffset, height / 2, 0);
+  Seitenteilrechts.position.set(xOffset * -1, height / 2, 0);
 
   scene.add(Seitenteilrechts);
 }
