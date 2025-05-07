@@ -357,7 +357,7 @@ function updateSeitenteillinks() {
 function addSeitenteilrechts(options) {
   const width = options.Seitenteilrechtsbreite;
   const height = options.Elementhöhe;
-  const xOffset = options.Elementbreite / 2 + width / 2;
+  const xOffset = - options.Elementbreite / 2 - width / 2;
 
   // Entferne vorheriges Seitenteil, falls vorhanden
   const old = scene.getObjectByName('Seitenteilrechts');
