@@ -297,19 +297,27 @@ function addTrennwand(options) {
 
 // Seitenteillinks
 function addSeitenteillinks(options) {
-  
-  const SeitenteillinksWidth = options.Seitenteillinksbreite;
-  const SeitenteillinksHeight = options.Elementhöhe;
+  const width = options.Seitenteillinksbreite;
+  const height = options.Elementhöhe;
+  const xOffset = options.Elementbreite / 2 + width / 2;
+
+  // Entferne vorheriges Seitenteil, falls vorhanden
+  const old = scene.getObjectByName('Seitenteillinks');
+  if (old) scene.remove(old);
+
   const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
-  color: options.elementColor,
-  metalness: 0.7,   // Metallischer Effekt
-  roughness: 0.05,   // Wenig rau, damit es leicht reflektiert
-});
+    color: options.elementColor,
+    metalness: 0.7,
+    roughness: 0.05,
+  });
 
   const Seitenteillinks = new THREE.Group();
-  createDoorWithGlassAndFrame(Seitenteillinks, SeitenteillinksWidth, SeitenteillinksHeight, options.sprossenRows, glassMaterial, sprosseMaterial);
-  Seitenteillinks.position.set(Elementbreite / 2, SeitenteillinksHeight / 2, 0);
+  Seitenteillinks.name = 'Seitenteillinks';
+
+  createDoorWithGlassAndFrame(Seitenteillinks, width, height, options.sprossenRows, glassMaterial, sprosseMaterial);
+
+  Seitenteillinks.position.set(xOffset, height / 2, 0);
 
   scene.add(Seitenteillinks);
 }
