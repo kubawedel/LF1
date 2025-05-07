@@ -403,8 +403,8 @@ function updateSeitenteilrechts() {
     const Seitenteilrechts = new THREE.Group();
     createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, glassMaterial, sprosseMaterial);
     
-    // Position links vom Hauptelement
-    Seitenteilrechts.position.set(-options.Elementbreite / 2 - width / 2, height / 2, 0);
+    // Position rechts vom Hauptelement
+    Seitenteilrechts.position.set(options.Elementbreite / 2 + width / 2, height / 2, 0);
 
     scene.add(Seitenteilrechts);
     SeitenteilrechtsMesh = Seitenteilrechts;
