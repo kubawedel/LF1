@@ -492,7 +492,7 @@ function updateOberlicht() {
     createDoorWithGlassAndFrame(Oberlicht, width, height, options.SOberlichtV, options.SOberlichtH, glassMaterial, sprosseMaterial);
 
     // Berechne die Verschiebung der Gesamtbreite zur Mitte
-    const offsetX = (options.Seitenteillinksbreite - options.Seitenteilrechtsbreite) / 2;
+    const offsetX = (options.Seitenteillinksbreite - options.Seitenteilrechtsbreite) / -2;
 
     // Positioniere das Oberlicht mittig zur Gesamtbreite
     Oberlicht.position.set(offsetX, options.Elementhöhe + height / 2, 0);
