@@ -347,7 +347,7 @@ function addSeitenteillinks(options) {
   Seitenteillinks.name = 'Seitenteillinks';
 
   const seitenteillinks = new THREE.Group();
-  createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, 0, glassMaterial, sprosseMaterial);
     
   Seitenteillinks.position.set(xOffset, height / 2, 0);
 
