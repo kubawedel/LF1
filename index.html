@@ -347,7 +347,7 @@ function addSeitenteillinks(options) {
   Seitenteillinks.name = 'Seitenteillinks';
 
   const seitenteillinks = new THREE.Group();
-  createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, 0, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.SSeitenteilL, glassMaterial, sprosseMaterial);
     
   Seitenteillinks.position.set(xOffset, height / 2, 0);
 
@@ -375,7 +375,7 @@ function updateSeitenteillinks() {
     });
 
       const seitenteillinks = new THREE.Group();
-      createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, 0, glassMaterial, sprosseMaterial);
+      createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.SSeitenteilL, glassMaterial, sprosseMaterial);
     
     // Position links vom Hauptelement
     seitenteillinks.position.set(-options.Elementbreite / 2 - width / 2, height / 2, 0);
@@ -405,7 +405,7 @@ function addSeitenteilrechts(options) {
   const Seitenteilrechts = new THREE.Group();
   Seitenteilrechts.name = 'Seitenteilrechts';
 
-  createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.SSeitenteilR, glassMaterial, sprosseMaterial);
 
   Seitenteilrechts.position.set(xOffset * -1, height / 2, 0);
 
@@ -433,7 +433,7 @@ function updateSeitenteilrechts() {
     });
 
     const Seitenteilrechts = new THREE.Group();
-    createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+    createDoorWithGlassAndFrame(Seitenteilrechts, width, height, options.sprossenRows, options.SSeitenteilR, glassMaterial, sprosseMaterial);
     
     // Position rechts vom Hauptelement
     Seitenteilrechts.position.set(options.Elementbreite / 2 + width / 2, height / 2, 0);
@@ -462,7 +462,7 @@ function addOberlicht(options) {
   const Oberlicht = new THREE.Group();
   Oberlicht.name = 'Oberlicht';
 
-  createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(Oberlicht, width, height, options.SOberlichtV, options.SOberlichtH, glassMaterial, sprosseMaterial);
 
   Oberlicht.position.set(0, options.Elementhöhe + height / 2, 0);
 
@@ -490,7 +490,7 @@ function updateOberlicht() {
     });
 
     const Oberlicht = new THREE.Group();
-    createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+    createDoorWithGlassAndFrame(Oberlicht, width, height, options.SOberlichtV, options.SOberlichtH, glassMaterial, sprosseMaterial);
     
     // Position links vom Hauptelement
     Oberlicht.position.set(0, options.Elementhöhe + height / 2, 0);
@@ -517,6 +517,10 @@ const options = {
   Seitenteilrechtsbreite: 0,
   Oberlicht: 'nein',
   Oberlichthöhe: 0,
+  SSeitenteilL: 0,
+  SSeitenteilR: 0,
+  SOberlichtH: 0,
+  SObeclithtV: 0,
 };
 
 // Add controls
@@ -607,6 +611,8 @@ const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 
 const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onChange((value) => {
   options.Seitenteillinks = value;
   updateSeitenteillinks();
+  updateOberlicht();
+  updateElement();
   toggleSeitenteillinksbreiteControl(value);
 });
        
@@ -619,7 +625,9 @@ function addSeitenteillinksbreiteControl() {
     .add(options, 'Seitenteillinksbreite', 20, 110)
     .name('Seitenteil links Breite')
     .onChange(() => {
-      updateSeitenteillinks(); // oder was immer du beim Ändern tun willst
+      updateSeitenteillinks(); 
+      updateOberlicht();
+      updateElement();
     });
 }
 
@@ -644,6 +652,8 @@ function toggleSeitenteillinksbreiteControl(value) {
 const SeitenteilrechtsControl = gui.add(options, 'Seitenteilrechts', ['nein', 'ja']).onChange((value) => {
   options.Seitenteilrechts = value;
   updateSeitenteilrechts();
+  updateOberlicht();
+  updateElement();
   toggleSeitenteilrechtsbreiteControl(value);
 });
 
@@ -657,7 +667,9 @@ function addSeitenteilrechtsbreiteControl() {
     .add(options, 'Seitenteilrechtsbreite', 20, 110)
     .name('Seitenteil links Breite')
     .onChange(() => {
-      updateSeitenteilrechts(); // oder was immer du beim Ändern tun willst
+      updateSeitenteilrechts(); 
+      updateOberlicht();
+      updateElement();
     });
 }
 
@@ -687,6 +699,8 @@ const OberlichtControl = gui.add(options, 'Oberlicht', ['nein', 'ja']).onChange(
        
 // Referenz zum Controller (anfangs null)
 let OberlichthöheControl = null;
+let SOberlichtHControl = null;
+let SObeclithtVControl = null;
 
 // Funktion zum Hinzufügen des Sliders
 function addOberlichthöheControl() {
@@ -697,7 +711,27 @@ function addOberlichthöheControl() {
       updateOberlicht(); // oder was immer du beim Ändern tun willst
     });
 }
+function addSOberlichtControls() {
+  SOberlichtHControl = gui
+    .add(options, 'SOberlichtH', 0, 8)
+    .name('Oberlicht Sprossen Höhe')
+    .onChange(updateOberlicht);
 
+  SObeclithtVControl = gui
+    .add(options, 'SObeclithtV', 0, 2)
+    .name('Oberlicht Sprossen Versatz')
+    .onChange(updateOberlicht);
+}
+function removeSOberlichtControls() {
+  if (SOberlichtHControl) {
+    gui.remove(SOberlichtHControl);
+    SOberlichtHControl = null;
+  }
+  if (SObeclithtVControl) {
+    gui.remove(SObeclithtVControl);
+    SObeclithtVControl = null;
+  }
+}
 // Funktion zum Entfernen des Sliders
 function removeOberlichthöheControl() {
   if (OberlichthöheControl) {
@@ -708,12 +742,15 @@ function removeOberlichthöheControl() {
 
 // Funktion zum Umschalten je nach Auswahl
 function toggleOberlichthöheControl(value) {
-  if (value === 'ja' && !OberlichthöheControl) {
-    addOberlichthöheControl();
-  } else if (value !== 'ja') {
+  if (value === 'ja') {
+    if (!OberlichthöheControl) addOberlichthöheControl();
+    if (!SOberlichtHControl || !SObeclithtVControl) addSOberlichtControls();
+  } else {
     removeOberlichthöheControl();
+    removeSOberlichtControls();
   }
 }
+
         
 // Add Zarge Type (initially hidden)
 let zargeControl;
