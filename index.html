@@ -460,7 +460,7 @@ function addOberlicht(options) {
   const Oberlicht = new THREE.Group();
   Oberlicht.name = 'Oberlicht';
 
-  createDoorWithGlassAndFrame(Seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+  createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
 
   Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
 
@@ -488,7 +488,7 @@ function updateOberlicht() {
     });
 
     const Oberlicht = new THREE.Group();
-    createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+    createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
     
     // Position links vom Hauptelement
     Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
