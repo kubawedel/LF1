@@ -440,6 +440,63 @@ function updateSeitenteilrechts() {
     SeitenteilrechtsMesh = Seitenteilrechts;
   }
 }
+
+// Oberlicht
+function addOberlicht(options) {
+  const width = options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite;
+  const height = options.Oberlichthöhe;
+
+  // Entferne vorheriges Oberlicht, falls vorhanden
+  const old = scene.getObjectByName('Oberlicht');
+  if (old) scene.remove(old);
+
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
+  const sprosseMaterial = new THREE.MeshStandardMaterial({ 
+    color: options.elementColor,
+    metalness: 0.7,
+    roughness: 0.05,
+  });
+
+  const Oberlicht = new THREE.Group();
+  Oberlicht.name = 'Oberlicht';
+
+  createDoorWithGlassAndFrame(Seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+
+  Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
+
+  scene.add(Oberlicht);
+}
+
+        let OberlichtMesh = null;
+
+function updateOberlicht() {
+  // Vorherige entfernen, wenn vorhanden
+  if (OberlichtMesh) {
+    scene.remove(OberlichtMesh);
+  }
+
+  if (options.Oberlicht === 'ja') {
+    // Neues Seitenteil erzeugen
+    const width = options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite;
+    const height = options.Oberlichthöhe;
+
+    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
+    const sprosseMaterial = new THREE.MeshStandardMaterial({ 
+      color: options.elementColor,
+      metalness: 0.7,
+      roughness: 0.05,
+    });
+
+    const Oberlicht = new THREE.Group();
+    createDoorWithGlassAndFrame(seitenteillinks, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
+    
+    // Position links vom Hauptelement
+    Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
+
+    scene.add(Oberlicht);
+    OberlichtMesh = Oberlicht;
+  }
+}
         
 // GUI-Konfiguration
 const gui = new GUI();
@@ -453,9 +510,11 @@ const options = {
   sprossenCols: 2,
   doorType: 'single', // Neue Option: 'single' oder 'double'
   Seitenteillinks: 'nein',
-  Seitenteillinksbreite: 20,
+  Seitenteillinksbreite: 0,
   Seitenteilrechts: 'nein',
-  Seitenteilrechtsbreite: 20,
+  Seitenteilrechtsbreite: 0,
+  Oberlicht: 'nein'
+  Oberlichthöhe: 0,
 };
 
 // Add controls
@@ -483,6 +542,7 @@ const ElementbreiteControl = gui.add(options, 'Elementbreite', 50, 300).onChange
   updateElement();
   updateSeitenteillinks();
   updateSeitenteilrechts();
+  updateOberlicht();
 });
 
 const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((value) => {
@@ -509,6 +569,7 @@ const ElementhöheControl = gui.add(options, 'Elementhöhe', 50, 300).onChange((
   updateElement();
   updateSeitenteillinks();
   updateSeitenteilrechts();
+  updateOberlicht();
 });
 
 const elementColorControl = gui.addColor(options, 'elementColor').onChange((value) => {
@@ -516,18 +577,21 @@ const elementColorControl = gui.addColor(options, 'elementColor').onChange((valu
   updateElement();
   updateSeitenteillinks();
   updateSeitenteilrechts();
+  updateOberlicht();
 });
 
 const sprossenRowsControl = gui.add(options, 'sprossenRows', 0, 5, 1).onChange(() => {
   updateElement();
   updateSeitenteillinks();
   updateSeitenteilrechts();
+  updateOberlicht();
 });
 
 const sprossenColsControl = gui.add(options, 'sprossenCols', 0, 5, 1).onChange(() => {
   updateElement();
   updateSeitenteillinks();
   updateSeitenteilrechts();
+  updateOberlicht();
 });
 
 const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 'Schiebetür', 'Trennwand']).onChange((value) => {
@@ -612,6 +676,42 @@ function toggleSeitenteilrechtsbreiteControl(value) {
   }
 }
 
+// GUI-Option: Oberlicht (ja/nein)
+const OberlichtControl = gui.add(options, 'Oberlicht', ['nein', 'ja']).onChange((value) => {
+  options.Oberlicht = value;
+  updateOberlicht();
+  toggleOberlichthöheControl(value);
+});
+       
+// Referenz zum Controller (anfangs null)
+let OberlichthöheControl = null;
+
+// Funktion zum Hinzufügen des Sliders
+function addOberlichthöheControl() {
+  OberlichthöheControl = gui
+    .add(options, 'Oberlichthöhe', 20, 70)
+    .name('Oberlicht höhe')
+    .onChange(() => {
+      updateOberlicht(); // oder was immer du beim Ändern tun willst
+    });
+}
+
+// Funktion zum Entfernen des Sliders
+function removeOberlichthöheControl() {
+  if (OberlichthöheControl) {
+    gui.remove(OberlichthöheControl);
+    OberlichthöheControl = null;
+  }
+}
+
+// Funktion zum Umschalten je nach Auswahl
+function toggleOberlichthöheControl(value) {
+  if (value === 'ja' && !OberlichthöheControl) {
+    addOberlichthöheControl();
+  } else if (value !== 'ja') {
+    removeOberlichthöheControl();
+  }
+}
         
 // Add Zarge Type (initially hidden)
 let zargeControl;
