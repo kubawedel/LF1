@@ -626,7 +626,7 @@ let SSeitenteilLControl = null; // Neuer Controller für SSeitenteilL
 function addSeitenteillinksbreiteControl() {
   SeitenteillinksbreiteControl = gui
     .add(options, 'Seitenteillinksbreite', 20, 110)
-    .name('Seitenteil rechts Breite')
+    .name('Breite-Links')
     .onChange(() => {
       updateSeitenteillinks(); 
       updateOberlicht();
@@ -638,7 +638,7 @@ function addSeitenteillinksbreiteControl() {
 function addSSeitenteilLControl() {
   SSeitenteilLControl = gui
     .add(options, 'SSeitenteilL', 0, 3)
-    .name('SSeitenteilL')
+    .name('Sprossen-Links')
     .onChange(updateSeitenteillinks);
 }
 
@@ -683,7 +683,7 @@ let SSeitenteilRControl = null; // Neuer Controller für SSeitenteilR
 function addSeitenteilrechtsbreiteControl() {
   SeitenteilrechtsbreiteControl = gui
     .add(options, 'Seitenteilrechtsbreite', 20, 110)
-    .name('Seitenteil rechts Breite')
+    .name('Breite-Rechts')
     .onChange(() => {
       updateSeitenteilrechts(); 
       updateOberlicht();
@@ -695,7 +695,7 @@ function addSeitenteilrechtsbreiteControl() {
 function addSSeitenteilRControl() {
   SSeitenteilRControl = gui
     .add(options, 'SSeitenteilR', 0, 3)
-    .name('SSeitenteilR')
+    .name('Sprossen-Rechts')
     .onChange(updateSeitenteilrechts);
 }
 
@@ -727,60 +727,56 @@ function toggleSeitenteilrechtsbreiteControl(value) {
 const OberlichtControl = gui.add(options, 'Oberlicht', ['nein', 'ja']).onChange((value) => {
   options.Oberlicht = value;
   updateOberlicht();
+  updateOberlicht();
+  updateElement();
   toggleOberlichthöheControl(value);
 });
-       
-// Referenz zum Controller (anfangs null)
+
 let OberlichthöheControl = null;
-let SOberlichtHControl = null;
-let SObeclithtVControl = null;
+let SOberlichtHControl = null; // Neuer Controller für SOberlichtH
 
 // Funktion zum Hinzufügen des Sliders
 function addOberlichthöheControl() {
   OberlichthöheControl = gui
-    .add(options, 'Oberlichthöhe', 20, 70)
-    .name('Oberlicht höhe')
+    .add(options, 'Oberlichthöhe', 20, 110)
+    .name('Oberlicht-Höhe')
     .onChange(() => {
-      updateOberlicht(); // oder was immer du beim Ändern tun willst
+      updateOberlicht(); 
+      updateOberlicht();
+      updateElement();
     });
 }
-function addSOberlichtControls() {
-  SOberlichtHControl = gui
-    .add(options, 'SOberlichtH', 0, 8)
-    .name('Oberlicht Sprossen Höhe')
-    .onChange(updateOberlicht);
 
-  SObeclithtVControl = gui
-    .add(options, 'SObeclithtV', 0, 2)
-    .name('Oberlicht Sprossen Versatz')
+// Neuer Slider für SOberlichtH
+function addSOberlichtHControl() {
+  SOberlichtHControl = gui
+    .add(options, 'SOberlichtH', 0, 3)
+    .name('SprossenOberlicht')
     .onChange(updateOberlicht);
 }
-function removeSOberlichtControls() {
-  if (SOberlichtHControl) {
-    gui.remove(SOberlichtHControl);
-    SOberlichtHControl = null;
-  }
-  if (SObeclithtVControl) {
-    gui.remove(SObeclithtVControl);
-    SObeclithtVControl = null;
-  }
-}
-// Funktion zum Entfernen des Sliders
+
+// Funktion zum Entfernen
 function removeOberlichthöheControl() {
   if (OberlichthöheControl) {
     gui.remove(OberlichthöheControl);
     OberlichthöheControl = null;
   }
 }
+function removeSOberlichtHControl() {
+  if (SOberlichtHControl) {
+    gui.remove(SOberlichtHControl);
+    SOberlichtHControl = null;
+  }
+}
 
-// Funktion zum Umschalten je nach Auswahl
+// Umschalten je nach Auswahl
 function toggleOberlichthöheControl(value) {
   if (value === 'ja') {
     if (!OberlichthöheControl) addOberlichthöheControl();
-    if (!SOberlichtHControl || !SObeclithtVControl) addSOberlichtControls();
+    if (!SOberlichtHControl) addSOberlichtHControl();
   } else {
     removeOberlichthöheControl();
-    removeSOberlichtControls();
+    removeSOberlichtHControl();
   }
 }
 
