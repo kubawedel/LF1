@@ -292,9 +292,10 @@ function addSlidingDoor(options) {
   const coverWidth = (options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite); // Doppelte Breite der Tür
   const coverHeight = 8; // Höhe der Blende 8 cm
   const coverDepth = 9; // Tiefe der Blende 9 cm
-
+  
+  const offsetX = (options.Seitenteillinksbreite - options.Seitenteilrechtsbreite) / -2;
   const cover = createLoftFrenchElement(coverWidth, coverHeight, coverDepth, {
-    x: 0,
+    x: offsetX,
     y: options.Elementhöhe + 4, // Position bündig über der Tür
     z: 2.5, // Bündig mit der Wand
   }, doorMaterial);
