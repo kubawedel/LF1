@@ -74,63 +74,93 @@ function removeCurrentElement() {
 }
 
 function createDoorWithGlassAndFrame(group, width, height, rows, cols, glassMaterial, sprosseMaterial) {
-  // Rahmen
-  const frameThickness = 3.5; // Rahmenbreite
-  const frameDepth = 4; // Rahmentiefe
 
-  // Rahmen oben
-  const topFrameGeometry = new THREE.BoxGeometry(width, frameThickness, frameDepth);
-  const topFrameMesh = new THREE.Mesh(topFrameGeometry, sprosseMaterial);
-  topFrameMesh.position.set(0, height / 2 - frameThickness / 2, 0);
-  group.add(topFrameMesh);
+  // Haupt-Rahmen 
+  const mainFrameThickness = 2;   
+  const frameDepth = 4;          
 
-  // Rahmen unten
-  const bottomFrameGeometry = new THREE.BoxGeometry(width, frameThickness, frameDepth);
-  const bottomFrameMesh = new THREE.Mesh(bottomFrameGeometry, sprosseMaterial);
-  bottomFrameMesh.position.set(0, -height / 2 + frameThickness / 2, 0);
-  group.add(bottomFrameMesh);
+  // Innenrahmen für Sprossen
+  const innerFrameThickness = 1.5; 
 
-  // Rahmen links
-  const leftFrameGeometry = new THREE.BoxGeometry(frameThickness, height - 2 * frameThickness, frameDepth);
-  const leftFrameMesh = new THREE.Mesh(leftFrameGeometry, sprosseMaterial);
-  leftFrameMesh.position.set(-width / 2 + frameThickness / 2, 0, 0);
-  group.add(leftFrameMesh);
+  // === Hauptrahmen (umlaufend) ===
+  const outerTop = new THREE.Mesh(new THREE.BoxGeometry(width, mainFrameThickness, frameDepth), sprosseMaterial);
+  outerTop.position.set(0, height / 2 - mainFrameThickness / 2, 0);
+  group.add(outerTop);
 
-  // Rahmen rechts
-  const rightFrameGeometry = new THREE.BoxGeometry(frameThickness, height - 2 * frameThickness, frameDepth);
-  const rightFrameMesh = new THREE.Mesh(rightFrameGeometry, sprosseMaterial);
-  rightFrameMesh.position.set(width / 2 - frameThickness / 2, 0, 0);
-  group.add(rightFrameMesh);
+  const outerBottom = new THREE.Mesh(new THREE.BoxGeometry(width, mainFrameThickness, frameDepth), sprosseMaterial);
+  outerBottom.position.set(0, -height / 2 + mainFrameThickness / 2, 0);
+  group.add(outerBottom);
 
-  // Glas
-  const glassWidth = width - 2 * frameThickness;
-  const glassHeight = height - 2 * frameThickness;
+  const outerLeft = new THREE.Mesh(new THREE.BoxGeometry(mainFrameThickness, height - 2 * mainFrameThickness, frameDepth), sprosseMaterial);
+  outerLeft.position.set(-width / 2 + mainFrameThickness / 2, 0, 0);
+  group.add(outerLeft);
+
+  const outerRight = new THREE.Mesh(new THREE.BoxGeometry(mainFrameThickness, height - 2 * mainFrameThickness, frameDepth), sprosseMaterial);
+  outerRight.position.set(width / 2 - mainFrameThickness / 2, 0, 0);
+  group.add(outerRight);
+
+// Spalt (sichtbar) – z.B. 0.2 cm = 2 mm
+const gap = 1.6; // mm
+
+// Innenrahmen-Größe
+const innerWidth = width - 2 * mainFrameThickness - gap;
+const innerHeight = height - 2 * mainFrameThickness - gap;
+
+// Positionierung: Mittelpunkt des Innenraums
+const innerTop = new THREE.Mesh(
+  new THREE.BoxGeometry(innerWidth, innerFrameThickness, frameDepth),
+  sprosseMaterial
+);
+innerTop.position.set(0.75, (innerHeight / 2), 0);
+group.add(innerTop);
+
+const innerBottom = new THREE.Mesh(
+  new THREE.BoxGeometry(innerWidth, innerFrameThickness, frameDepth),
+  sprosseMaterial
+);
+innerBottom.position.set(-0.75, -(innerHeight / 2), 0);
+group.add(innerBottom);
+
+const innerLeft = new THREE.Mesh(
+  new THREE.BoxGeometry(innerFrameThickness, innerHeight, frameDepth),
+  sprosseMaterial
+);
+innerLeft.position.set(-(innerWidth / 2), 0.75, 0);
+group.add(innerLeft);
+
+const innerRight = new THREE.Mesh(
+  new THREE.BoxGeometry(innerFrameThickness, innerHeight, frameDepth),
+  sprosseMaterial
+);
+innerRight.position.set((innerWidth / 2), -0.75, 0);
+group.add(innerRight);
+  // Glasfläche innerhalb des inneren Rahmens
+  const glassWidth = innerWidth;
+  const glassHeight = innerHeight;
   const glassDepth = 0.7;
-  const glassGeometry = new THREE.BoxGeometry(glassWidth, glassHeight, glassDepth);
-  const glassMesh = new THREE.Mesh(glassGeometry, glassMaterial);
+  const glassMesh = new THREE.Mesh(new THREE.BoxGeometry(glassWidth, glassHeight, glassDepth), glassMaterial);
   group.add(glassMesh);
 
-  // Sprossen
-  const sprossenWidth = 1.5; // Dicke der Sprossen
-  const sprossenDepth = 4;  
+  // Sprossen innerhalb des Sprossenrahmens
+  const sprossenWidth = 1.5; // 38.1 mm
   for (let i = 1; i < rows; i++) {
-    const y = -height / 2 + (i * height) / rows;
-    const horizontalSprosse = new THREE.Mesh(
-      new THREE.BoxGeometry(glassWidth, sprossenWidth, sprossenDepth),
+    const y = -glassHeight / 2 + (i * glassHeight) / rows;
+    const hSprosse = new THREE.Mesh(
+      new THREE.BoxGeometry(glassWidth, sprossenWidth, frameDepth),
       sprosseMaterial
     );
-    horizontalSprosse.position.set(0, y, 0);
-    group.add(horizontalSprosse);
+    hSprosse.position.set(0, y, 0);
+    group.add(hSprosse);
   }
 
   for (let j = 1; j < cols; j++) {
-    const x = -width / 2 + (j * width) / cols;
-    const verticalSprosse = new THREE.Mesh(
-      new THREE.BoxGeometry(sprossenWidth, glassHeight, sprossenDepth),
+    const x = -glassWidth / 2 + (j * glassWidth) / cols;
+    const vSprosse = new THREE.Mesh(
+      new THREE.BoxGeometry(sprossenWidth, glassHeight, frameDepth),
       sprosseMaterial
     );
-    verticalSprosse.position.set(x, 0, 0);
-    group.add(verticalSprosse);
+    vSprosse.position.set(x, 0, 0);
+    group.add(vSprosse);
   }
 }
 
@@ -221,7 +251,7 @@ function addSwingDoor(options) {
 function addSlidingDoor(options) {
   removeCurrentElement();
 
-  const doorWidth = (options.Elementbreite + 2) / (options.doorType === 'double' ? 2 : 1); // Halbe Breite bei Doppelschiebetür
+  const doorWidth = (options.Elementbreite + 6) / (options.doorType === 'double' ? 2 : 1); // Halbe Breite bei Doppelschiebetür
   const doorHeight = options.Elementhöhe - 1; // 1 cm größer in der Höhe
   const glassMaterial = new THREE.MeshStandardMaterial({ color: 0x87CEEB, opacity: 0.5, transparent: true });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
@@ -241,19 +271,19 @@ function addSlidingDoor(options) {
     // Linke Türhälfte
     const leftDoor = new THREE.Group();
     createDoorWithGlassAndFrame(leftDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    leftDoor.position.set(-doorWidth / 2, doorHeight / 2 + 1, 2); // Verschiebung nach links
+    leftDoor.position.set(-doorWidth / 2, doorHeight / 2 + 1, 4.5); // Verschiebung nach links
     slidingDoorGroup.add(leftDoor);
 
     // Rechte Türhälfte
     const rightDoor = new THREE.Group();
     createDoorWithGlassAndFrame(rightDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    rightDoor.position.set(doorWidth / 2, doorHeight / 2 + 1, 2); // Verschiebung nach rechts
+    rightDoor.position.set(doorWidth / 2, doorHeight / 2 + 1, 4.5); // Verschiebung nach rechts
     slidingDoorGroup.add(rightDoor);
   } else {
     // Einflügelige Schiebetür mittig
     const singleDoor = new THREE.Group();
     createDoorWithGlassAndFrame(singleDoor, doorWidth, doorHeight, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
-    singleDoor.position.set(0, doorHeight / 2, 2); // Mittig vor der Wand
+    singleDoor.position.set(0, doorHeight / 2 + 1, 4.5); // Mittig vor der Wand
     slidingDoorGroup.add(singleDoor);
   }
 
@@ -264,8 +294,8 @@ function addSlidingDoor(options) {
 
   const cover = createLoftFrenchElement(coverWidth, coverHeight, coverDepth, {
     x: 0,
-    y: options.Elementhöhe + 5, // Position bündig über der Tür
-    z: 0, // Bündig mit der Wand
+    y: options.Elementhöhe + 4, // Position bündig über der Tür
+    z: 2.5, // Bündig mit der Wand
   }, doorMaterial);
 
   slidingDoorGroup.add(cover); // Blende zur Türgruppe hinzufügen
@@ -511,22 +541,36 @@ const elementTypeControl = gui.add(options, 'elementType', ['none', 'Drehtür', 
 const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja']).onChange((value) => {
   options.Seitenteillinks = value;
   updateSeitenteillinks();
-  toggleSeitenteillinksbreite(value);
+  toggleSeitenteillinksbreiteControl(value);
 });
+       
+// Referenz zum Controller (anfangs null)
+let seitenteillinksbreiteControl = null;
 
-// GUI-Option: Breite des linken Seitenteils
-const SeitenteillinksbreiteControl = gui.add(options, 'Seitenteillinksbreite', 20, 110).onChange((value) => {
-  updateSeitenteillinks();
-});
-// Direkt nach dem Erstellen verstecken:
-SeitenteillinksbreiteControl.domElement.parentElement.style.display = 'none';
+// Funktion zum Hinzufügen des Sliders
+function addSeitenteillinksbreiteControl() {
+  seitenteillinksbreiteControl = gui
+    .add(options, 'Seitenteillinksbreite', 20, 110)
+    .name('Seitenteil links Breite')
+    .onChange(() => {
+      updateSeitenteillinks(); // oder was immer du beim Ändern tun willst
+    });
+}
 
-// Breiten-Slider zeigen/verstecken
-function toggleSeitenteillinksbreite(value) {
-  if (value === 'ja') {
-    SeitenteillinksbreiteControl.domElement.parentElement.style.display = '';
-  } else {
-    SeitenteillinksbreiteControl.domElement.parentElement.style.display = 'none';
+// Funktion zum Entfernen des Sliders
+function removeSeitenteillinksbreiteControl() {
+  if (seitenteillinksbreiteControl) {
+    gui.remove(seitenteillinksbreiteControl);
+    seitenteillinksbreiteControl = null;
+  }
+}
+
+// Funktion zum Umschalten je nach Auswahl
+function toggleSeitenteillinksbreiteControl(value) {
+  if (value === 'ja' && !seitenteillinksbreiteControl) {
+    addSeitenteillinksbreiteControl();
+  } else if (value !== 'ja') {
+    removeSeitenteillinksbreiteControl();
   }
 }
 
@@ -534,24 +578,40 @@ function toggleSeitenteillinksbreite(value) {
 const SeitenteilrechtsControl = gui.add(options, 'Seitenteilrechts', ['nein', 'ja']).onChange((value) => {
   options.Seitenteilrechts = value;
   updateSeitenteilrechts();
-  toggleSeitenteilrechtsbreite(value);
+  toggleSeitenteilrechtsbreiteControl(value);
 });
 
-// GUI-Option: Breite des linken Seitenteils
-const SeitenteilrechtsbreiteControl = gui.add(options, 'Seitenteilrechtsbreite', 20, 110).onChange((value) => {
-  updateSeitenteilrechts();
-});
-// Direkt nach dem Erstellen verstecken:
-SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = 'none';
+      
+// Referenz zum Controller (anfangs null)
+let SeitenteilrechtsbreiteControl = null;
 
-// Breiten-Slider zeigen/verstecken
-function toggleSeitenteilrechtsbreite(value) {
-  if (value === 'ja') {
-    SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = '';
-  } else {
-    SeitenteilrechtsbreiteControl.domElement.parentElement.style.display = 'none';
+// Funktion zum Hinzufügen des Sliders
+function addSeitenteilrechtsbreiteControl() {
+  SeitenteilrechtsbreiteControl = gui
+    .add(options, 'Seitenteilrechtsbreite', 20, 110)
+    .name('Seitenteil links Breite')
+    .onChange(() => {
+      updateSeitenteilrechts(); // oder was immer du beim Ändern tun willst
+    });
+}
+
+// Funktion zum Entfernen des Sliders
+function removeSeitenteilrechtsbreiteControl() {
+  if (SeitenteilrechtsbreiteControl) {
+    gui.remove(SeitenteilrechtsbreiteControl);
+    SeitenteilrechtsbreiteControl = null;
   }
 }
+
+// Funktion zum Umschalten je nach Auswahl
+function toggleSeitenteilrechtsbreiteControl(value) {
+  if (value === 'ja' && !SeitenteilrechtsbreiteControl) {
+    addSeitenteilrechtsbreiteControl();
+  } else if (value !== 'ja') {
+    removeSeitenteilrechtsbreiteControl();
+  }
+}
+
         
 // Add Zarge Type (initially hidden)
 let zargeControl;
