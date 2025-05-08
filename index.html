@@ -632,10 +632,11 @@ function addSeitenteillinksbreiteControl() {
     });
 }
 function addSSeitenteilLControl() {
-  SOberlichtHControl = gui
-    .add(options, 'SOberlichtH', 0, 3)
+  SSeitenteilLControl = gui
+    .add(options, 'SSeitenteilL', 0, 3)
     .name('SSeitenteilL')
     .onChange(updateSeitenteillinks);
+}
 
 // Funktion zum Entfernen des Sliders
 function removeSeitenteillinksbreiteControl() {
