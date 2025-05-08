@@ -618,6 +618,7 @@ const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja'
        
 // Referenz zum Controller (anfangs null)
 let seitenteillinksbreiteControl = null;
+let SSeitenteilLControl = null;
 
 // Funktion zum Hinzufügen des Sliders
 function addSeitenteillinksbreiteControl() {
@@ -630,6 +631,11 @@ function addSeitenteillinksbreiteControl() {
       updateElement();
     });
 }
+function addSSeitenteilLControl() {
+  SOberlichtHControl = gui
+    .add(options, 'SOberlichtH', 0, 3)
+    .name('SSeitenteilL')
+    .onChange(updateSeitenteillinks);
 
 // Funktion zum Entfernen des Sliders
 function removeSeitenteillinksbreiteControl() {
@@ -638,13 +644,20 @@ function removeSeitenteillinksbreiteControl() {
     seitenteillinksbreiteControl = null;
   }
 }
-
+function removeSSeitenteilLControl() {
+  if (SSeitenteilLControl) {
+    gui.remove(SSeitenteilLControl);
+    SSeitenteilLControl = null;
+  }
+}
 // Funktion zum Umschalten je nach Auswahl
 function toggleSeitenteillinksbreiteControl(value) {
-  if (value === 'ja' && !seitenteillinksbreiteControl) {
-    addSeitenteillinksbreiteControl();
-  } else if (value !== 'ja') {
+  if (value === 'ja') {
+      if (!SeitenteillinksbreiteControl) addSeitenteillinksbreiteControl();
+      if (!SSeitenteilLControl) addSSeitenteilLControl();
+  } else {
     removeSeitenteillinksbreiteControl();
+    removeSSeitenteilLControl();
   }
 }
 
