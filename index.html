@@ -615,22 +615,23 @@ const SeitenteillinksControl = gui.add(options, 'Seitenteillinks', ['nein', 'ja'
   updateElement();
   toggleSeitenteillinksbreiteControl(value);
 });
-       
-// Referenz zum Controller (anfangs null)
-let seitenteillinksbreiteControl = null;
-let SSeitenteilLControl = null;
+
+let SeitenteillinksbreiteControl = null;
+let SSeitenteilLControl = null; // Neuer Controller für SSeitenteilL
 
 // Funktion zum Hinzufügen des Sliders
 function addSeitenteillinksbreiteControl() {
-  seitenteillinksbreiteControl = gui
+  SeitenteillinksbreiteControl = gui
     .add(options, 'Seitenteillinksbreite', 20, 110)
-    .name('Seitenteil links Breite')
+    .name('Seitenteil rechts Breite')
     .onChange(() => {
       updateSeitenteillinks(); 
       updateOberlicht();
       updateElement();
     });
 }
+
+// Neuer Slider für SSeitenteilL
 function addSSeitenteilLControl() {
   SSeitenteilLControl = gui
     .add(options, 'SSeitenteilL', 0, 3)
@@ -638,11 +639,11 @@ function addSSeitenteilLControl() {
     .onChange(updateSeitenteillinks);
 }
 
-// Funktion zum Entfernen des Sliders
+// Funktion zum Entfernen
 function removeSeitenteillinksbreiteControl() {
-  if (seitenteillinksbreiteControl) {
-    gui.remove(seitenteillinksbreiteControl);
-    seitenteillinksbreiteControl = null;
+  if (SeitenteillinksbreiteControl) {
+    gui.remove(SeitenteillinksbreiteControl);
+    SeitenteillinksbreiteControl = null;
   }
 }
 function removeSSeitenteilLControl() {
@@ -651,11 +652,12 @@ function removeSSeitenteilLControl() {
     SSeitenteilLControl = null;
   }
 }
-// Funktion zum Umschalten je nach Auswahl
+
+// Umschalten je nach Auswahl
 function toggleSeitenteillinksbreiteControl(value) {
   if (value === 'ja') {
-      if (!SeitenteillinksbreiteControl) addSeitenteillinksbreiteControl();
-      if (!SSeitenteilLControl) addSSeitenteilLControl();
+    if (!SeitenteillinksbreiteControl) addSeitenteillinksbreiteControl();
+    if (!SSeitenteilLControl) addSSeitenteilLControl();
   } else {
     removeSeitenteillinksbreiteControl();
     removeSSeitenteilLControl();
@@ -671,15 +673,14 @@ const SeitenteilrechtsControl = gui.add(options, 'Seitenteilrechts', ['nein', 'j
   toggleSeitenteilrechtsbreiteControl(value);
 });
 
-      
-// Referenz zum Controller (anfangs null)
 let SeitenteilrechtsbreiteControl = null;
+let SSeitenteilRControl = null; // Neuer Controller für SSeitenteilR
 
 // Funktion zum Hinzufügen des Sliders
 function addSeitenteilrechtsbreiteControl() {
   SeitenteilrechtsbreiteControl = gui
     .add(options, 'Seitenteilrechtsbreite', 20, 110)
-    .name('Seitenteil links Breite')
+    .name('Seitenteil rechts Breite')
     .onChange(() => {
       updateSeitenteilrechts(); 
       updateOberlicht();
@@ -687,23 +688,38 @@ function addSeitenteilrechtsbreiteControl() {
     });
 }
 
-// Funktion zum Entfernen des Sliders
+// Neuer Slider für SSeitenteilR
+function addSSeitenteilRControl() {
+  SSeitenteilRControl = gui
+    .add(options, 'SSeitenteilR', 0, 3)
+    .name('SSeitenteilR')
+    .onChange(updateSeitenteilrechts);
+}
+
+// Funktion zum Entfernen
 function removeSeitenteilrechtsbreiteControl() {
   if (SeitenteilrechtsbreiteControl) {
     gui.remove(SeitenteilrechtsbreiteControl);
     SeitenteilrechtsbreiteControl = null;
   }
 }
-
-// Funktion zum Umschalten je nach Auswahl
-function toggleSeitenteilrechtsbreiteControl(value) {
-  if (value === 'ja' && !SeitenteilrechtsbreiteControl) {
-    addSeitenteilrechtsbreiteControl();
-  } else if (value !== 'ja') {
-    removeSeitenteilrechtsbreiteControl();
+function removeSSeitenteilRControl() {
+  if (SSeitenteilRControl) {
+    gui.remove(SSeitenteilRControl);
+    SSeitenteilRControl = null;
   }
 }
 
+// Umschalten je nach Auswahl
+function toggleSeitenteilrechtsbreiteControl(value) {
+  if (value === 'ja') {
+    if (!SeitenteilrechtsbreiteControl) addSeitenteilrechtsbreiteControl();
+    if (!SSeitenteilRControl) addSSeitenteilRControl();
+  } else {
+    removeSeitenteilrechtsbreiteControl();
+    removeSSeitenteilRControl();
+  }
+}
 // GUI-Option: Oberlicht (ja/nein)
 const OberlichtControl = gui.add(options, 'Oberlicht', ['nein', 'ja']).onChange((value) => {
   options.Oberlicht = value;
