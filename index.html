@@ -145,7 +145,6 @@ group.add(innerRight);
   group.add(glassMesh);
 
 hauptGlasHöhe = glassHeight;
-hauptSprossenRows = rows;
 
   // Sprossen innerhalb des Sprossenrahmens
   const sprossenWidth = 1.5; // 38.1 mm
@@ -424,7 +423,7 @@ createSideOrTopElementWithMatchingSprossen(
   SeitenteillinksBreite,
   Elementhöhe,
   hauptGlasHöhe,
-  hauptSprossenRows,
+  options.sprossenRows,
   glassMaterial,
   sprosseMaterial
 );
@@ -460,7 +459,7 @@ createSideOrTopElementWithMatchingSprossen(
   options.SeitenteillinksBreite,
   options.Elementhöhe,
   hauptGlasHöhe,
-  hauptSprossenRows,
+  options.sprossenRows,
   glassMaterial,
   sprosseMaterial
 );
