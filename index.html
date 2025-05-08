@@ -478,7 +478,6 @@ function updateOberlicht() {
   }
 
   if (options.Oberlicht === 'ja') {
-    // Neues Seitenteil erzeugen
     const width = options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite;
     const height = options.Oberlichthöhe;
 
@@ -491,9 +490,12 @@ function updateOberlicht() {
 
     const Oberlicht = new THREE.Group();
     createDoorWithGlassAndFrame(Oberlicht, width, height, options.SOberlichtV, options.SOberlichtH, glassMaterial, sprosseMaterial);
-    
-    // Position links vom Hauptelement
-    Oberlicht.position.set(0, options.Elementhöhe + height / 2, 0);
+
+    // Berechne die Verschiebung der Gesamtbreite zur Mitte
+    const offsetX = (options.Seitenteillinksbreite - options.Seitenteilrechtsbreite) / 2;
+
+    // Positioniere das Oberlicht mittig zur Gesamtbreite
+    Oberlicht.position.set(offsetX, options.Elementhöhe + height / 2, 0);
 
     scene.add(Oberlicht);
     OberlichtMesh = Oberlicht;
