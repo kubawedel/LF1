@@ -462,7 +462,7 @@ function addOberlicht(options) {
 
   createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
 
-  Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
+  Oberlicht.position.set(0, options.Elementhöhe + height / 2, 0);
 
   scene.add(Oberlicht);
 }
@@ -491,7 +491,7 @@ function updateOberlicht() {
     createDoorWithGlassAndFrame(Oberlicht, width, height, options.sprossenRows, options.sprossenCols, glassMaterial, sprosseMaterial);
     
     // Position links vom Hauptelement
-    Oberlicht.position.set(0, Elementhöhe + height / 2, 0);
+    Oberlicht.position.set(0, options.Elementhöhe + height / 2, 0);
 
     scene.add(Oberlicht);
     OberlichtMesh = Oberlicht;
