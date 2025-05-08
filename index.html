@@ -73,6 +73,9 @@ function removeCurrentElement() {
   }
 }
 
+let hauptGlasHöhe = 0;
+let hauptSprossenRows = 0;
+        
 function createDoorWithGlassAndFrame(group, width, height, rows, cols, glassMaterial, sprosseMaterial) {
 
   // Haupt-Rahmen 
@@ -140,6 +143,9 @@ group.add(innerRight);
   const glassDepth = 0.7;
   const glassMesh = new THREE.Mesh(new THREE.BoxGeometry(glassWidth, glassHeight, glassDepth), glassMaterial);
   group.add(glassMesh);
+
+hauptGlasHöhe = glassHeight;
+hauptSprossenRows = rows;
 
   // Sprossen innerhalb des Sprossenrahmens
   const sprossenWidth = 1.5; // 38.1 mm
