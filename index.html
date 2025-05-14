@@ -58,9 +58,14 @@ const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222222, 1);
 scene.add(hemiLight);
 
 const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-dirLight.position.set(200, 300, 100);
+dirLight.position.set(
+  Math.cos(THREE.MathUtils.degToRad(70)) * 150,
+  100,
+  Math.sin(THREE.MathUtils.degToRad(70)) * 150
+);
 dirLight.castShadow = true;
 scene.add(dirLight);
+
 
 
 // Funktion zum Erstellen eines LOFT French Elements
