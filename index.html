@@ -36,6 +36,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputEncoding = THREE.sRGBEncoding; // ← NEU: für realistischeres Licht und Materialien
 document.body.appendChild(renderer.domElement);
 
+
 // Kamera-Steuerung hinzufügen
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -180,7 +181,7 @@ function addSwingDoor(options) {
   const zargeThickness = options.zargeType === 'standard' ? 5 : 2; // 5 cm for standard, 2 cm for slim
   const zargeMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
   const sprossenRows = options.sprossenRows;
@@ -217,13 +218,13 @@ function addSwingDoor(options) {
   const doorHeight = zargeHeight - 1; // Reduced by 0.2 cm on top and 1 cm at bottom
   const doorMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
-  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
 
@@ -262,15 +263,15 @@ function addSlidingDoor(options) {
 
   const doorWidth = (options.Elementbreite + 6) / (options.doorType === 'double' ? 2 : 1); // Halbe Breite bei Doppelschiebetür
   const doorHeight = options.Elementhöhe - 1; // 1 cm größer in der Höhe
-  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
   const doorMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
 
@@ -320,10 +321,10 @@ function addTrennwand(options) {
 
   const TrennwandWidth = options.Elementbreite;
   const TrennwandHeight = options.Elementhöhe;
-  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
   color: options.elementColor,
-  metalness: 1, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
+  metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
  
 });
 
@@ -346,14 +347,13 @@ function addSeitenteillinks(options) {
   if (old) scene.remove(old);
 
   const glassMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1,
+    color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1,
     opacity: 0.5,
     transparent: true
   });
   const sprosseMaterial = new THREE.MeshStandardMaterial({
     color: options.elementColor,
-    metalness: 0.7,
-    roughness: 0.05,
+    metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
   });
 
   const seitenteillinks = new THREE.Group();
@@ -378,11 +378,10 @@ function updateSeitenteillinks() {
     const width = options.Seitenteillinksbreite;
     const height = options.Elementhöhe;
 
-    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
     const sprosseMaterial = new THREE.MeshStandardMaterial({ 
       color: options.elementColor,
-      metalness: 0.7,
-      roughness: 0.05,
+      metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
     });
 
     const Seitenteillinks = new THREE.Group();
@@ -405,11 +404,10 @@ function addSeitenteilrechts(options) {
   const old = scene.getObjectByName('Seitenteilrechts');
   if (old) scene.remove(old);
 
-  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
     color: options.elementColor,
-    metalness: 0.7,
-    roughness: 0.05,
+    metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
   });
 
   const Seitenteilrechts = new THREE.Group();
@@ -435,11 +433,10 @@ function updateSeitenteilrechts() {
     const width = options.Seitenteilrechtsbreite;
     const height = options.Elementhöhe;
 
-    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
     const sprosseMaterial = new THREE.MeshStandardMaterial({ 
-      color: options.elementColor,
-      metalness: 0.7,
-      roughness: 0.05,
+    color: options.elementColor,
+    metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
     });
 
     const Seitenteilrechts = new THREE.Group();
@@ -462,11 +459,10 @@ function addOberlicht(options) {
   const old = scene.getObjectByName('Oberlicht');
   if (old) scene.remove(old);
 
-  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+  const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
   const sprosseMaterial = new THREE.MeshStandardMaterial({ 
     color: options.elementColor,
-    metalness: 0.7,
-    roughness: 0.05,
+    metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
   });
 
   const Oberlicht = new THREE.Group();
@@ -491,11 +487,10 @@ function updateOberlicht() {
     const width = options.Elementbreite + options.Seitenteillinksbreite + options.Seitenteilrechtsbreite;
     const height = options.Oberlichthöhe;
 
-    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
+    const glassMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, transmission: 1, opacity: 1, transparent: true, roughness: 0, metalness: 0, ior: 1.45, thickness: 1.5, reflectivity: 0.1 });
     const sprosseMaterial = new THREE.MeshStandardMaterial({ 
       color: options.elementColor,
-      metalness: 0.7,
-      roughness: 0.05,
+      metalness: 0.3, roughness: 0.2, clearcoat: 0.3, reflectivity: 0.6
     });
 
     const Oberlicht = new THREE.Group();
