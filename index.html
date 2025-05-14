@@ -33,6 +33,7 @@ camera.lookAt(0, 250, 0);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding; // ← NEU: für realistischeres Licht und Materialien
 document.body.appendChild(renderer.domElement);
 
 // Kamera-Steuerung hinzufügen
